@@ -1,19 +1,56 @@
-# 🎫 Online Complaint Management System (Java Spring Boot)
+# 📋 Online Complaint Management System (Java Web Portal)
 
-An industry-ready, RESTful ticket management portal that allows users to log operational complaints and enables administrators to assign, update, and resolve service tickets with clear role-based lifecycle controls.
+A zero-dependency, lightweight Java web application for managing support ticket lifecycles, triaging service issues, and handling role-based complaint workflows through an interactive web dashboard.
 
-## 📌 Features
-* **Role-Based Authentication:** Custom token-based header authentication (`X-Auth`) supporting `USER` and `ADMIN` roles.
-* **Complaint State Machine:** Enforces transition flows: `OPEN` → `IN_PROGRESS` → `RESOLVED` → `CLOSED`.
-* **Interactive Commenting:** Multithreaded comment handling for ongoing communication between users and administrators.
-* **Advanced Search & Filtering:** Filter complaints by status, operational category (`IT`, `Facility`, etc.), and priority (`Critical`, `High`, etc.).
-* **Input Validation:** Strict field-level constraint checks on payload requests.
+---
 
-## 🏗️ Architecture & Data Model
-The system uses concurrent, thread-safe memory maps to model users, sessions, tickets, and comment feeds in process, avoiding external infrastructure dependencies for rapid execution and testing.
+## 📌 Problem Statement & Overview
+Traditional manual complaint handling (via physical forms, emails, or spreadsheets) leads to unorganized tracking, poor operational accountability, and delayed issue resolutions.
 
-## 🚀 Getting Started
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/YOUR_USERNAME/Online-Complaint-Management-System-Java.git](https://github.com/YOUR_USERNAME/Online-Complaint-Management-System-Java.git)
-   cd Online-Complaint-Management-System-Java
+This system provides a centralized digital portal for:
+* **Users / Students:** Submitting detailed complaints, selecting categories/priorities, and tracking real-time status updates.
+* **Administrators:** Reviewing submitted tickets, assigning dedicated staff members, updating resolution states, and closing completed issues.
+
+---
+
+## 🎯 Key Features
+* **Interactive Web UI:** Clean HTML5/CSS3 dashboard powered directly by standard Java HTTP engines.
+* **Role-Based Workflows:** Enforces distinct capabilities for `USER` and `ADMIN` roles.
+* **Lifecycle State Machine:** Manages ticket state transitions: `OPEN` → `IN_PROGRESS` → `RESOLVED` → `CLOSED`.
+* **Dynamic Ticket Actions:** Live administrative controls for instant assignment, resolution, and closure.
+* **Thread-Safe Memory Layer:** Leverages `ConcurrentHashMap` and `AtomicLong` for process execution and multi-user safety.
+
+---
+
+## 🛠️ Tech Stack
+* **Core Language:** Java (JDK 17+)
+* **HTTP Engine:** `com.sun.net.httpserver.HttpServer` (Native Java Library — Zero external dependencies)
+* **Architecture:** In-Memory Data Models, Object-Oriented Design (Records, Enums, Concurrent Collections)
+* **Build Tooling:** Standard Java Compiler (`javac`) / Maven-compatible structure
+
+---
+
+## 🏛️ System Architecture & Workflow
+
+```text
+  [ User Submits Ticket ]
+             │
+             ▼
+      ┌──────────────┐
+      │ Status: OPEN │
+      └──────┬───────┘
+             │ (Admin Assigns Staff)
+             ▼
+ ┌──────────────────────┐
+ │ Status: IN_PROGRESS  │
+ └───────────┬──────────┘
+             │ (Admin Resolves Issue)
+             ▼
+   ┌──────────────────┐
+   │ Status: RESOLVED │
+   └─────────┬────────┘
+             │ (User/Admin Closes Ticket)
+             ▼
+    ┌────────────────┐
+    │ Status: CLOSED │
+    └────────────────┘
